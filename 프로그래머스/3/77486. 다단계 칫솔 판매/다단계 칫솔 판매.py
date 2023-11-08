@@ -1,7 +1,6 @@
 class Node:
     def __init__(self, r):
         self.up = r
-        self.profit = 0  # 수수료 계산
         self.money = [0]  # 수익
         
 def solution(enroll, referral, seller, amount):
@@ -25,9 +24,7 @@ def solution(enroll, referral, seller, amount):
             up = tree[now].up            
             if up == '-':  # 추천인이 센터인 경우 수수료 분배 계산 생략     
                 break
-                
-            tree[up].profit += ten  # 추천인에게 수수료 분배
-            
+                            
             now = up
             a = ten
             
