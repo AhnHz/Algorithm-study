@@ -1,53 +1,39 @@
 class Node:
-    def __init__(self, r, plus):
+    def __init__(self, r):
         self.up = r
-        self.profit = plus
-        self.money = [0]
-
+        self.profit = 0  # 수수료 계산
+        self.money = [0]  # 수익
         
 def solution(enroll, referral, seller, amount):
     # linked list
-    tree = {n: Node(r, 0) for n, r in zip(enroll, referral)}
+    tree = {n: Node(r) for n, r in zip(enroll, referral)}  # {판매원: 추천인}
     answer = []
     
-    for i in range(len(seller)):  # 0 ~ seller num
-        ten = 1
-        #print('index: ', i)
-        #print('판매원: ', seller[i])
+    for i in range(len(seller)):
         now = seller[i]
+        
+        ten = 1  # 수수료 계산할 변수
         amount[i] *= 100  # 하나당 100원
         a = amount[i]
         
-        while ten:
-            ten = a // 10  # 첫번째 분배
-            own = a - ten  # 10% 뗀 자신의 몫
-            #print('  now: ', now)
+        while ten:  # 10% 뗄 수수료가 존재한다면
+            ten = a // 10  # 10% 수수료
+            own = a - ten  # 10% 뗀 자신의 몫(수익)
             money = tree[now].money
             money.append(own)
 
-            up = tree[now].up
-            
-            if up == '-':  # 추천인이 센터인 경우       
+            up = tree[now].up            
+            if up == '-':  # 추천인이 센터인 경우 수수료 분배 계산 생략     
                 break
                 
-            tree[up].profit += ten  # 추천인 10% 수수료
-            
-            
-            #print('  추천인: ', up)
-            #print('  수수료: ', ten)
-            #print('  자신의 몫: ', own)
+            tree[up].profit += ten  # 추천인에게 수수료 분배
             
             now = up
             a = ten
             
-        #print(seller[i], '이익: ', tree[seller[i]].money)
-        #print('-' * 20)
-            
     for i in enroll:
         money = tree[i].money
-  
-        total = sum(money)
-        #print('{}의 수익: {}'.format(i, total))
+        total = sum(money)  # 판매원마다 수익 총합
         answer.append(total)
         
     return answer
