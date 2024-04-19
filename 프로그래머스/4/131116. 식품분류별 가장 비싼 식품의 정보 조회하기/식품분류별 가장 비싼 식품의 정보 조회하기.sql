@@ -1,0 +1,11 @@
+-- 분류별 가격이 가장 비싼 식품의
+-- CATEGORY, MAX_PRICE, PRODUCT_NAME
+-- 과자, 국, 김치, 식용류만
+SELECT CATEGORY, PRICE AS MAX_PRICE, PRODUCT_NAME
+FROM FOOD_PRODUCT
+WHERE PRICE IN (SELECT MAX(PRICE) 
+                FROM FOOD_PRODUCT 
+                GROUP BY CATEGORY 
+               )
+AND CATEGORY IN ('과자', '국', '김치', '식용유')
+ORDER BY 2 DESC
